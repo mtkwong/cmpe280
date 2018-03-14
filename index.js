@@ -14,7 +14,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => res.render('pages/index'));
 
-app.get('/healthcampspa', function(req, res)) {
+app.get('/healthcampspa', function(req, res) {
   /*
   dbClient.connect();
 
@@ -27,7 +27,7 @@ app.get('/healthcampspa', function(req, res)) {
   });*/
 
   res.render('pages/healthcampspa')
-}
+});
 
 var server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
