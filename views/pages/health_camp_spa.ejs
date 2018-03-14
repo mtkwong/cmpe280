@@ -45,12 +45,13 @@
 
     function init() {
       // Setup Database, 1MB size
+      /*
       db = openDatabase("HealthRecords", "1.0", "Patient health records", 1024*1024);
       db.transaction(function (tx) {
         // Always drop table and create new one 
         tx.executeSql("DROP TABLE IF EXISTS Records");
         tx.executeSql("CREATE TABLE IF NOT EXISTS Records (ID int NOT NULL, FirstName varchar(255), LastName varchar(255), Gender varchar(6), Age int, Details varchar(255), Photo mediumblob, Height int, Weight int, BodyTemp int, Pulse int, BloodPressure int, Medications varchar(255), Notes varchar(255), PRIMARY KEY(ID))");
-      });
+      });*/
 
       // Prepare camera capture
       const player = document.getElementById('player');
@@ -66,9 +67,10 @@
         // Draw the video frame to the hidden canvas
         context.drawImage(player, 0, 0, canvas.width, canvas.height);
         const pngUrl = canvas.toDataURL();
+        /*
         db.transaction(function (tx) {  
           tx.executeSql("UPDATE Records SET Photo=? WHERE ID=?", [pngUrl, id]);
-        });
+        });*/
       });
 
       // Attach the video stream to the video element and autoplay
@@ -116,9 +118,10 @@
       var dt = document.getElementById("det").value;
       var ph = "";
 
+      /*
       db.transaction(function (tx) {  
         tx.executeSql("INSERT INTO Records (ID, FirstName, LastName, Gender, Age, Details, Photo) VALUES (?,?,?,?,?,?,?)", [id,fn,ln,gn,ag,dt,ph]);
-      });
+      });*/
 
       document.getElementById("dmForm").reset();
     }
@@ -132,9 +135,10 @@
       var md = document.getElementById("med").value;
       var nt = document.getElementById("nts").value;
 
+      /*
       db.transaction(function (tx) {  
         tx.executeSql("UPDATE Records SET Height=?, Weight=?, BodyTemp=?, Pulse=?, BloodPressure=?, Medications=?, Notes=? WHERE ID=?", [ht,wt,bt,pr,bp,md,nt,id]);
-      });
+      });*/
 
       document.getElementById("hvForm").reset();
       document.getElementById("med").value = "";
@@ -142,6 +146,7 @@
     }
 
     function buildTable() {
+      /*
       db.transaction(function (tx) {
         tx.executeSql('SELECT * FROM Records', [], function (tx, results) {
           var len = results.rows.length,i,item,tr,tdName,tdAge,tdGender,tdPhoto,img,tdMeds,tdNotes;
@@ -183,7 +188,7 @@
           }
   
         }, null);
-      });
+      });*/
     }
 
     function capturePhoto() {
