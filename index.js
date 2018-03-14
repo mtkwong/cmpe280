@@ -14,7 +14,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => res.render('pages/index'));
 
-app.get('/healthcampspa', function(req, res) {
+app.get('/health_camp_spa', function(req, res) {
   /*
   dbClient.connect();
 
