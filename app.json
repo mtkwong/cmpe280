@@ -1,0 +1,7 @@
+{
+  "name": "cmpe280",
+  "description": "CMPE 280 Projects",
+  "repository": "https://github.com/mtkwong/cmpe280",
+  "keywords": ["node", "express", "heroku"],
+  "image": "heroku/nodejs"
+}

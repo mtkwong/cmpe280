@@ -1,14 +1,13 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.3.0",
-  "description": "A sample Node.js app using Express 4",
+  "name": "cmpe280-projects",
+  "version": "1.0.0",
+  "description": "A collection of projects as a Node.js app using Express 4",
   "engines": {
     "node": "8.9.1"
   },
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "node test.js"
   },
   "dependencies": {
     "ejs": "^2.5.6",
@@ -20,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+    "url": "https://github.com/mtkwong/cmpe280"
   },
   "keywords": [
     "node",

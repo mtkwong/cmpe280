@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <title>Health Camp SPA</title>
+  <style>
+    body{margin:0px;}
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #052a66;
+    }
+    #mainDiv{position:relative;}
+    .hz{float:left;}
+    li.menu {float: right;}
+    #title, li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 17px 25px;
+        text-decoration: none;
+        font-family: "Arial";
+    }
+    li a:hover {background-color: #6dbae8;}
+    li a.currentTab{background-color: #6dbae8;}
+    div.contentDiv{text-align:center;padding:40px 100px;}
+    p{display:table-row;}
+    label{display:table-cell;font-family:"Arial";font-size:14pt;text-align:right;}
+    input,select,textarea{display:table-cell;font-family:"Arial";font-size:14pt;}
+    button{background-color:#1fa51a;padding:7px 14px;color:white;font-size:14pt;
+      border:2px solid #11680e;border-radius:5px;}
+    button:hover{background-color:#11680e;}
+    input.hvInput{margin:10px 10px;}
+    table,tr,td{border-collapse:collapse;border:2px solid #125184;font-family:"Arial";}
+    thead>tr>td{padding:8px 30px;background-color:#1576c4;color:white;}
+    tbody>tr>td{padding:5px 5px;color:black;}
+    tbody>tr.even{background-color:#9bc6e8;}
+    tbody>tr.odd{background-color:#c6dff2;}
+  </style>
+  <script type="text/javascript">
+    var db; // Database object
+    var id=0; // Current ID, for inserting into database
+
+    function init() {
+      // Setup Database, 1MB size
+      db = openDatabase("HealthRecords", "1.0", "Patient health records", 1024*1024);
+      db.transaction(function (tx) {
+        // Always drop table and create new one 
+        tx.executeSql("DROP TABLE IF EXISTS Records");
+        tx.executeSql("CREATE TABLE IF NOT EXISTS Records (ID int NOT NULL, FirstName varchar(255), LastName varchar(255), Gender varchar(6), Age int, Details varchar(255), Photo mediumblob, Height int, Weight int, BodyTemp int, Pulse int, BloodPressure int, Medications varchar(255), Notes varchar(255), PRIMARY KEY(ID))");
+      });
+
+      // Prepare camera capture
+      const player = document.getElementById('player');
+      const canvas = document.getElementById('canvas');
+      const context = canvas.getContext('2d');
+      const captureButton = document.getElementById('capture');
+
+      const constraints = {
+        video: true,
+      };
+
+      captureButton.addEventListener('click', () => {
+        // Draw the video frame to the hidden canvas
+        context.drawImage(player, 0, 0, canvas.width, canvas.height);
+        const pngUrl = canvas.toDataURL();
+        db.transaction(function (tx) {  
+          tx.executeSql("UPDATE Records SET Photo=? WHERE ID=?", [pngUrl, id]);
+        });
+      });
+
+      // Attach the video stream to the video element and autoplay
+      navigator.mediaDevices.getUserMedia(constraints)
+        .then((stream) => {
+          player.srcObject = stream;
+        });
+    }
+
+    // Show the appropriate content depending on which menubar item is clicked
+    function showDiv(name) {
+      if(name === "Demographics") {
+        document.getElementById("dmTab").className = "currentTab";
+        document.getElementById("hvTab").className = "";
+        document.getElementById("rpTab").className = "";
+        document.getElementById("dmDiv").style.display = "block";
+        document.getElementById("hvDiv").style.display = "none";
+        document.getElementById("rpDiv").style.display = "none";
+      }
+      else if(name === "Health Vitals") {
+        document.getElementById("dmTab").className = "";
+        document.getElementById("hvTab").className = "currentTab";
+        document.getElementById("rpTab").className = "";
+        document.getElementById("dmDiv").style.display = "none";
+        document.getElementById("hvDiv").style.display = "block";
+        document.getElementById("rpDiv").style.display = "none";
+      }
+      else if(name === "Reports") {
+        document.getElementById("dmTab").className = "";
+        document.getElementById("hvTab").className = "";
+        document.getElementById("rpTab").className = "currentTab";
+        document.getElementById("dmDiv").style.display = "none";
+        document.getElementById("hvDiv").style.display = "none";
+        document.getElementById("rpDiv").style.display = "block";
+        buildTable();
+      }
+    }
+
+    function saveDm() {
+      id++;
+      var fn = document.getElementById("fnm").value;
+      var ln = document.getElementById("lnm").value;
+      var gn = document.getElementById("gnd").value;
+      var ag = document.getElementById("age").value;
+      var dt = document.getElementById("det").value;
+      var ph = "";
+
+      db.transaction(function (tx) {  
+        tx.executeSql("INSERT INTO Records (ID, FirstName, LastName, Gender, Age, Details, Photo) VALUES (?,?,?,?,?,?,?)", [id,fn,ln,gn,ag,dt,ph]);
+      });
+
+      document.getElementById("dmForm").reset();
+    }
+
+    function saveHv() {
+      var ht = document.getElementById("hgt").value;
+      var wt = document.getElementById("wgt").value;
+      var bt = document.getElementById("bdt").value;
+      var pr = document.getElementById("pls").value;
+      var bp = document.getElementById("bps").value;
+      var md = document.getElementById("med").value;
+      var nt = document.getElementById("nts").value;
+
+      db.transaction(function (tx) {  
+        tx.executeSql("UPDATE Records SET Height=?, Weight=?, BodyTemp=?, Pulse=?, BloodPressure=?, Medications=?, Notes=? WHERE ID=?", [ht,wt,bt,pr,bp,md,nt,id]);
+      });
+
+      document.getElementById("hvForm").reset();
+      document.getElementById("med").value = "";
+      document.getElementById("nts").value = "";
+    }
+
+    function buildTable() {
+      db.transaction(function (tx) {
+        tx.executeSql('SELECT * FROM Records', [], function (tx, results) {
+          var len = results.rows.length,i,item,tr,tdName,tdAge,tdGender,tdPhoto,img,tdMeds,tdNotes;
+          var tbody = document.getElementById("tbody");
+          tbody.innerHTML = "";
+  
+          for (i = 0; i < len; i++){
+            item = results.rows.item(i);
+            tr = document.createElement("tr");
+            if (i%2 == 0) {
+              tr.className = "even";
+            } else {
+              tr.className = "odd";
+            }
+            tdName = document.createElement("td");
+            tdName.innerHTML = item.FirstName + " " + item.LastName;
+            tr.appendChild(tdName);
+            tdAge = document.createElement("td");
+            tdAge.innerHTML = item.Age;
+            tr.appendChild(tdAge);
+            tdGender = document.createElement("td");
+            tdGender.innerHTML = item.Gender;
+            tr.appendChild(tdGender);
+
+            tdPhoto = document.createElement("td");
+            img = document.createElement("img");
+            img.src = item.Photo;
+            tdPhoto.appendChild(img);
+            tr.appendChild(tdPhoto);
+
+            tdMeds = document.createElement("td");
+            tdMeds.innerHTML = item.Medications;
+            tr.appendChild(tdMeds);
+            tdNotes = document.createElement("td");
+            tdNotes.innerHTML = item.Notes;
+            tr.appendChild(tdNotes);
+
+            tbody.appendChild(tr);
+          }
+  
+        }, null);
+      });
+    }
+
+    function capturePhoto() {
+      ;
+    }
+  </script>
+</head>
+<body onload="init();">
+
+<ul>
+  <li id="title" class="hz">Health Camp SPA</li>
+  <li class="menu"><a id="rpTab" onclick="showDiv('Reports');">Reports</a></li>
+  <li class="menu"><a id="hvTab" onclick="showDiv('Health Vitals');">Health Vitals</a></li>
+  <li class="menu"><a id="dmTab" class="currentTab" onclick="showDiv('Demographics');">Demographics</a></li>
+</ul>
+
+<div id="mainDiv">
+  <div id="dmDiv" class="contentDiv">
+    <div class="hz" style="width:50%;">
+      <form id="dmForm">
+        <p><label>First Name:</label>
+        <input id="fnm" type="text"></input></p>
+        <p><label>Last Name:</label>
+        <input id="lnm" type="text"></input></p>
+        <p><label>Gender:</label>
+          <select id="gnd">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select></p>
+        <p><label>Age:</label>
+        <input id="age" type="text"></input></p>
+        <p><label style="vertical-align:middle;">Notes or Other Details:</label>
+        <textarea id="det" rows="5" cols="25"></textarea></p>
+      </form>
+      <br/>
+      <button type="button" onclick="saveDm();">Save</button>
+    </div>
+    <div class="hz" style="width:50%;">
+      <video id="player" width="400" height="240" controls autoplay></video>
+      <br/><button id="capture" type="button">Capture</button>
+      <canvas id="canvas" width=80 height=60 style="display:none;"></canvas>
+    </div>
+  </div>
+  <div id="hvDiv" class="contentDiv" style="display:none;">
+    <div class="hz" style="width:60%;">
+      <form id="hvForm">
+        <p><label>Height (in.):</label>
+        <input id="hgt" class="hvInput" type="text"></input></p>
+        <p><label>Weight (lbs):</label>
+        <input id="wgt" class="hvInput" type="text"></input></p>
+        <p><label>Body Temperature (&deg;F):</label>
+        <input id="bdt" class="hvInput" type="text"></input></p>
+        <p><label>Pulse Rate:</label>
+        <input id="pls" class="hvInput" type="text"></input></p>
+        <p><label>Blood Pressure:</label>
+        <input id="bps" class="hvInput" type="text"></input></p>
+      </form>
+      <br/>
+      <button type="button" onclick="saveHv();">Save</button>
+    </div>
+    <div class="hz" style="width:40%;">
+      <label>Medications:</label><br/>
+      <textarea id="med" rows="4" cols="40"></textarea><br/>
+      <label>Notes:</label><br/>
+      <textarea id="nts" rows="4" cols="40"></textarea><br/>
+    </div>
+  </div>
+  <div id="rpDiv" class="contentDiv" style="display:none;padding:50px 100px;">
+    <table>
+      <thead>
+        <tr><td colspan="6">Patient Health Records</td></tr>
+        <tr>
+          <td>Name</td>
+          <td>Age</td>
+          <td>Gender</td>
+          <td>Photo</td>
+          <td>Medications</td>
+          <td>Notes</td>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
