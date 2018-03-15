@@ -21,7 +21,7 @@ app.get('/', (req, res) => res.render('pages/index'));
 app.get('/healthcamp', (req, res) => res.render('pages/health_camp_spa'));
 
 app.post('/savePersonalInfo', function(req, res) {
-  console.log(req.body);
+  console.log(req);
   //res.contentType('json');
   //res.send(JSON.stringify({response:'hello my world'}));
   /*
