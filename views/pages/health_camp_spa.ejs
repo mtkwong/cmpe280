@@ -154,7 +154,7 @@
       $.ajax({
         url: "/saveHealthInfo",
         type: "POST",
-        dataType: "json",
+        //dataType: "json",
         data: JSON.stringify({
           id: id,
           ht: document.getElementById("hgt").value,
@@ -166,8 +166,8 @@
           nt: document.getElementById("nts").value
         }),
         contentType: "application/json",
-        cache: false,
-        timeout: 5000,
+        //cache: false,
+        //timeout: 5000,
         /*
         complete: function() {
           console.log('complete');

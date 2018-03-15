@@ -20,8 +20,8 @@ app.get('/healthcamp', (req, res) => res.render('pages/health_camp_spa'));
 
 app.post('/savePersonalInfo', function(req, res) {
   console.log(req.body);
-  res.contentType('json');
-  res.send(JSON.stringify({response:'hello my world'}));
+  //res.contentType('json');
+  //res.send(JSON.stringify({response:'hello my world'}));
   /*
   dbClient.connect();
 
