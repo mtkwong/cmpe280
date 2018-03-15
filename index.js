@@ -32,12 +32,9 @@ app.post('/savePersonalInfo', function(req, res) {
     if (err) {
       console.log(err);
     }
-    /*
-    for (let row of res.rows) {
-      console.log(JSON.stringify(row));
-    }*/
     dbClient.end();
   });
+  res.sendStatus(200);
 });
 
 app.post('/saveHealthInfo', function(req, res) {
