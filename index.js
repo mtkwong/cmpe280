@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 5555;
 const app = express();
 const { Client } = require('pg');
@@ -10,12 +11,14 @@ const dbClient = new Client({
 
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false; }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => res.render('pages/index'));
+app.get('/healthcamp', (req, res) => res.render('pages/health_camp_spa'));
 
-app.get('/healthcamp', function(req, res) {
-  /*
+app.post('/savePersonalInfo', function(req, res) {
   dbClient.connect();
 
   dbClient.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
@@ -24,9 +27,15 @@ app.get('/healthcamp', function(req, res) {
       console.log(JSON.stringify(row));
     }
     dbClient.end();
-  });*/
+  });
+});
 
-  res.render('pages/health_camp_spa')
+app.post('/saveHealthInfo', function(req, res) {
+  ;
+});
+
+app.get('/retrieveInfo', function(req, res) {
+  ;
 });
 
 var server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));

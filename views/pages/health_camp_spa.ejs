@@ -39,9 +39,11 @@
     tbody>tr.even{background-color:#9bc6e8;}
     tbody>tr.odd{background-color:#c6dff2;}
   </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script type="text/javascript">
-    var db; // Database object
+    //var db; // Database object
     var id=0; // Current ID, for inserting into database
+    var pngUrl;
 
     function init() {
       // Setup Database, 1MB size
@@ -66,7 +68,7 @@
       captureButton.addEventListener('click', () => {
         // Draw the video frame to the hidden canvas
         context.drawImage(player, 0, 0, canvas.width, canvas.height);
-        const pngUrl = canvas.toDataURL();
+        pngUrl = canvas.toDataURL();
         /*
         db.transaction(function (tx) {  
           tx.executeSql("UPDATE Records SET Photo=? WHERE ID=?", [pngUrl, id]);
@@ -111,12 +113,34 @@
 
     function saveDm() {
       id++;
-      var fn = document.getElementById("fnm").value;
-      var ln = document.getElementById("lnm").value;
-      var gn = document.getElementById("gnd").value;
-      var ag = document.getElementById("age").value;
-      var dt = document.getElementById("det").value;
-      var ph = "";
+
+      $.ajax({
+        url: "/savePersonalInfo",
+        type: "POST",
+        dataType: "json",
+        data: {
+          id: id,
+          fn: document.getElementById("fnm").value,
+          ln: document.getElementById("lnm").value,
+          gn: document.getElementById("gnd").value,
+          ag: document.getElementById("age").value,
+          dt: document.getElementById("det").value,
+          ph: pngUrl
+        },
+        contentType: "application/json",
+        cache: false,
+        timeout: 5000,
+        complete: function() {
+          console.log('complete');
+        },
+        success: function(data) {
+          console.log(data);
+          console.log('success');
+        },
+        error: function() {
+          console.log('error');
+        },
+      });
 
       /*
       db.transaction(function (tx) {  
@@ -126,14 +150,35 @@
       document.getElementById("dmForm").reset();
     }
 
-    function saveHv() {
-      var ht = document.getElementById("hgt").value;
-      var wt = document.getElementById("wgt").value;
-      var bt = document.getElementById("bdt").value;
-      var pr = document.getElementById("pls").value;
-      var bp = document.getElementById("bps").value;
-      var md = document.getElementById("med").value;
-      var nt = document.getElementById("nts").value;
+    function saveHv() {\
+      $.ajax({
+        url: "/saveHealthInfo",
+        type: "POST",
+        dataType: "json",
+        data: {
+          id: id,
+          ht: document.getElementById("hgt").value,
+          wt: document.getElementById("wgt").value,
+          bt: document.getElementById("bdt").value,
+          pr: document.getElementById("pls").value,
+          bp: document.getElementById("bps").value,
+          md: document.getElementById("med").value,
+          nt: document.getElementById("nts").value
+        },
+        contentType: "application/json",
+        cache: false,
+        timeout: 5000,
+        complete: function() {
+          console.log('complete');
+        },
+        success: function(data) {
+          console.log(data);
+          console.log('success');
+        },
+        error: function() {
+          console.log('error');
+        },
+      });
 
       /*
       db.transaction(function (tx) {  
@@ -229,7 +274,7 @@
     <div class="hz" style="width:50%;">
       <video id="player" width="400" height="240" controls autoplay></video>
       <br/><button id="capture" type="button">Capture</button>
-      <canvas id="canvas" width=80 height=60 style="display:none;"></canvas>
+      <canvas id="canvas" width=80 height=60></canvas>
     </div>
   </div>
   <div id="hvDiv" class="contentDiv" style="display:none;">
