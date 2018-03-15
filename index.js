@@ -19,6 +19,8 @@ app.get('/', (req, res) => res.render('pages/index'));
 app.get('/healthcamp', (req, res) => res.render('pages/health_camp_spa'));
 
 app.post('/savePersonalInfo', function(req, res) {
+  console.log(req.body);
+  /*
   dbClient.connect();
 
   dbClient.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
@@ -27,7 +29,7 @@ app.post('/savePersonalInfo', function(req, res) {
       console.log(JSON.stringify(row));
     }
     dbClient.end();
-  });
+  });*/
 });
 
 app.post('/saveHealthInfo', function(req, res) {
