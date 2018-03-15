@@ -118,7 +118,7 @@
         url: "/savePersonalInfo",
         type: "POST",
         //dataType: "json",
-        data: {
+        data: JSON.stringify({
           id: id,
           fn: document.getElementById("fnm").value,
           ln: document.getElementById("lnm").value,
@@ -126,7 +126,7 @@
           ag: document.getElementById("age").value,
           dt: document.getElementById("det").value,
           ph: pngUrl
-        },
+        }),
         contentType: "application/json",
         //cache: false,
         //timeout: 5000,
