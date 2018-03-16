@@ -50,12 +50,14 @@ app.get('/retrieveInfo', function(req, res) {
   dbClient.query(text, (err, res) => {
     if (err) {
       console.log(err)
+      res.sendStatus(500);
     } else {
-      console.log(res.rows)
+      json = JSON.stringify(res.rows);
+      console.log(json)
+      res.sendStatus(json);
       // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
     }
   });
-  res.sendStatus(200);
 });
 
 var server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
