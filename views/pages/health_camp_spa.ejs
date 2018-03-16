@@ -145,13 +145,14 @@
       $.ajax({
         url: "/retrieveInfo",
         type: "GET",
-        success: function(res) {/*
-          var len = results.rows.length,i,item,tr,tdName,tdAge,tdGender,tdPhoto,img,tdMeds,tdNotes;
+        success: function(res) {
+          var results = JSON.parse(res);
+          var len = results.length,i,item,tr,tdName,tdAge,tdGender,tdPhoto,img,tdMeds,tdNotes;
           var tbody = document.getElementById("tbody");
           tbody.innerHTML = "";
   
           for (i = 0; i < len; i++){
-            item = results.rows.item(i);
+            item = results[i];
             tr = document.createElement("tr");
             if (i%2 == 0) {
               tr.className = "even";
@@ -182,14 +183,9 @@
             tr.appendChild(tdNotes);
 
             tbody.appendChild(tr);
-          }*/
-          alert(res);
+          }
         }
       });
-    }
-
-    function capturePhoto() {
-      ;
     }
   </script>
 </head>
