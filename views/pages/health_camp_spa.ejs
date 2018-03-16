@@ -160,26 +160,26 @@
               tr.className = "odd";
             }
             tdName = document.createElement("td");
-            tdName.innerHTML = item.FirstName + " " + item.LastName;
+            tdName.innerHTML = item.firstname + " " + item.lastname;
             tr.appendChild(tdName);
             tdAge = document.createElement("td");
-            tdAge.innerHTML = item.Age;
+            tdAge.innerHTML = item.age;
             tr.appendChild(tdAge);
             tdGender = document.createElement("td");
-            tdGender.innerHTML = item.Gender;
+            tdGender.innerHTML = item.gender;
             tr.appendChild(tdGender);
 
             tdPhoto = document.createElement("td");
             img = document.createElement("img");
-            img.src = item.Photo;
+            img.src = item.photo;
             tdPhoto.appendChild(img);
             tr.appendChild(tdPhoto);
 
             tdMeds = document.createElement("td");
-            tdMeds.innerHTML = item.Medications;
+            tdMeds.innerHTML = item.medications;
             tr.appendChild(tdMeds);
             tdNotes = document.createElement("td");
-            tdNotes.innerHTML = item.Notes;
+            tdNotes.innerHTML = item.notes;
             tr.appendChild(tdNotes);
 
             tbody.appendChild(tr);
