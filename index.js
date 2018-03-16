@@ -21,11 +21,8 @@ app.get('/', (req, res) => res.render('pages/index'));
 app.get('/healthcamp', (req, res) => res.render('pages/health_camp_spa'));
 
 app.post('/savePersonalInfo', function(req, res) {
-  console.log(req.body);
   const text = 'INSERT INTO healthrecords(ID, FirstName, LastName, Gender, Age, Details, Photo) VALUES($1, $2, $3, $4, $5, $6, $7)';
   const values = [req.body.id, req.body.fn, req.body.ln, req.body.gn, req.body.ag, req.body.dt, req.body.ph];
-  //res.contentType('json');
-  //res.send(JSON.stringify({response:'hello my world'}));
   
   dbClient.connect();
   dbClient.query(text, values, (err, res) => {
@@ -38,7 +35,18 @@ app.post('/savePersonalInfo', function(req, res) {
 });
 
 app.post('/saveHealthInfo', function(req, res) {
-  ;
+  console.log(req.body);
+  const text = 'UPDATE Records SET Height=$1, Weight=$2, BodyTemp=$3, Pulse=$4, BloodPressure=$5, Medications=$6, Notes=$7 WHERE ID=$8';
+  const values = [req.body.ht, req.body.wt, req.body.bt, req.body.pr, req.body.bp, req.body.md, req.body.nt, req.body.id];
+  
+  dbClient.connect();
+  dbClient.query(text, values, (err, res) => {
+    if (err) {
+      console.log(err);
+    }
+    dbClient.end();
+  });
+  res.sendStatus(200);
 });
 
 app.get('/retrieveInfo', function(req, res) {

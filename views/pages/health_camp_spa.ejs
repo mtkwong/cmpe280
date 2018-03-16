@@ -112,12 +112,12 @@
     }
 
     function saveDm() {
+      // Update ID here
       id++;
 
       $.ajax({
         url: "/savePersonalInfo",
         type: "POST",
-        //dataType: "json",
         data: JSON.stringify({
           id: id,
           fn: document.getElementById("fnm").value,
@@ -128,25 +128,7 @@
           ph: pngUrl
         }),
         contentType: "application/json",
-        /*
-        cache: false,
-        timeout: 5000,
-        complete: function() {
-          console.log('complete');
-        },
-        success: function(data) {
-          console.log(data);
-          console.log('success');
-        },
-        error: function() {
-          console.log('error');
-        },*/
       });
-
-      /*
-      db.transaction(function (tx) {  
-        tx.executeSql("INSERT INTO Records (ID, FirstName, LastName, Gender, Age, Details, Photo) VALUES (?,?,?,?,?,?,?)", [id,fn,ln,gn,ag,dt,ph]);
-      });*/
 
       document.getElementById("dmForm").reset();
     }
@@ -155,7 +137,6 @@
       $.ajax({
         url: "/saveHealthInfo",
         type: "POST",
-        //dataType: "json",
         data: JSON.stringify({
           id: id,
           ht: document.getElementById("hgt").value,
@@ -167,19 +148,6 @@
           nt: document.getElementById("nts").value
         }),
         contentType: "application/json",
-        /*
-        cache: false,
-        timeout: 5000,
-        complete: function() {
-          console.log('complete');
-        },
-        success: function(data) {
-          console.log(data);
-          console.log('success');
-        },
-        error: function() {
-          console.log('error');
-        },*/
       });
 
       /*
