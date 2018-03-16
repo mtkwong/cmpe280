@@ -57,7 +57,7 @@
 
       captureButton.addEventListener('click', () => {
         // Draw the video frame to the hidden canvas
-        context.drawImage(player, 0, 0, canvas.width/2, canvas.height/2);
+        context.drawImage(player, 0, 0, canvas.width, canvas.height);
         pngUrl = canvas.toDataURL();
       });
 
@@ -222,7 +222,7 @@
     <div class="hz" style="width:50%;">
       <video id="player" width="400" height="240" controls autoplay></video>
       <br/><button id="capture" type="button">Capture</button>
-      <br/><canvas id="canvas" width=160 height=120></canvas>
+      <br/><br/><canvas id="canvas" width=120 height=90></canvas>
     </div>
   </div>
   <div id="hvDiv" class="contentDiv" style="display:none;">
