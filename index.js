@@ -36,7 +36,7 @@ app.post('/savePersonalInfo', function(req, res) {
 
 app.post('/saveHealthInfo', function(req, res) {
   console.log(req.body);
-  const text = 'UPDATE Records SET Height=$1, Weight=$2, BodyTemp=$3, Pulse=$4, BloodPressure=$5, Medications=$6, Notes=$7 WHERE ID=$8';
+  const text = 'UPDATE healthrecords SET Height=$1, Weight=$2, BodyTemp=$3, Pulse=$4, BloodPressure=$5, Medications=$6, Notes=$7 WHERE ID=$8';
   const values = [req.body.ht, req.body.wt, req.body.bt, req.body.pr, req.body.bp, req.body.md, req.body.nt, req.body.id];
   
   dbClient.connect();
