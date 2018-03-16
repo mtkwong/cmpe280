@@ -45,20 +45,9 @@ app.post('/saveHealthInfo', function(req, res) {
   res.sendStatus(200);
 });
 
-app.get('/retrieveInfo', function(req, res) {
-  const text = 'SELECT * FROM healthrecords';
-  dbClient.query(text, (err, res) => {
-    if (err) {
-      console.log(err)
-      res.sendStatus(500);
-    } else {
-      json = JSON.stringify(res.rows);
-      console.log(json)
-      res.send(json);
-      //res.sendStatus(500);
-      // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
-    }
-  });
+app.get('/retrieveInfo', async function(req, res) {
+  const { rows } = await dbClient.query("SELECT * FROM healthrecords");
+  res.send(JSON.stringify(rows));
 });
 
 var server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
