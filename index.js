@@ -54,7 +54,8 @@ app.get('/retrieveInfo', function(req, res) {
     } else {
       json = JSON.stringify(res.rows);
       console.log(json)
-      res.sendStatus(json);
+      res.send(json);
+      //res.sendStatus(500);
       // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
     }
   });
