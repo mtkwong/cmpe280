@@ -76,8 +76,9 @@ app.get('/test', (req, res) => {
   }, function (err, result) {
     if (err) return console.error(err)
     console.log(JSON.stringify(result));
+    res.send(JSON.stringify({"status":200}));
   });
-  res.send(JSON.stringify({"status":200}));
+  //res.send(JSON.stringify({"status":200}));
 });
 
 var server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
