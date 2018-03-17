@@ -4,8 +4,16 @@
   <% include ../partials/header.ejs %>
   <title>MyCO Map</title>
   <style>
+    #map {
+      height: 400px;
+      width: 100%;
+    }
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+  <!--<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+    </script>-->
   <script type="text/javascript">
     function init() {
       initMap();
