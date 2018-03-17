@@ -23,7 +23,22 @@
         type: "GET",
         success: function(res) {
           var json = JSON.parse(res);
-          console.log(json);
+          var locArr = json.locations.location;
+          var icons = {
+            "Distribution Facility": "http://www.googlemapsmarkers.com/v1/fc382a/",
+            "HeadQuarters": "http://www.googlemapsmarkers.com/v1/ffffff/",
+            "Call Center": "http://www.googlemapsmarkers.com/v1/8ce0ff/",
+            "RetailLocation": "http://www.googlemapsmarkers.com/v1/32d137/",
+          }
+          //console.log(json);
+          for(var i=0; i<locArr.length; i++) {
+            var loc = locArr[i];
+            var marker = new google.maps.Marker({
+              position: new google.maps.LatLng(loc.latitude, loc.longitude),
+              icon: icons[loc.type],
+              map: map
+            });
+          }
         }
       });   
     }
@@ -31,7 +46,7 @@
     function initMap() {
       var sjsu = {lat: 37.3353, lng: -121.8813};
       var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 11,
+        zoom: 10,
         center: sjsu
       });
       var marker = new google.maps.Marker({
