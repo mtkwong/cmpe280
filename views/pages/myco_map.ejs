@@ -5,7 +5,7 @@
   <title>MyCO Map</title>
   <style>
     #map {
-      height: 700px;
+      height: 750px;
       width: 1000px;
     }
   </style>
@@ -44,15 +44,15 @@
     }
 
     function initMap() {
-      var sjsu = {lat: 37.3353, lng: -121.8813};
+      var center = {lat: 37.382093, lng: -122.001715};
       var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
-        center: sjsu
-      });
+        center: center
+      });/*
       var marker = new google.maps.Marker({
-        position: sjsu,
+        position: center,
         map: map
-      });
+      });*/
       return map;
     }
   </script>
