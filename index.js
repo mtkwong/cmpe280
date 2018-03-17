@@ -60,8 +60,8 @@ app.get('/retrieveInfo', async function(req, res) {
  *************************************/
 
 seneca.add('role:map,cmd:getData', async function (msg, reply) {
-  const json = await axios.get(msg.url);
-  reply(null, json)
+  const response = await axios.get(msg.url);
+  reply(null, response.data)
 });
 
 app.get('/mycoMap', (req, res) => {
@@ -75,7 +75,7 @@ app.get('/test', (req, res) => {
     url:'https://raw.githubusercontent.com/mtkwong/cmpe280/master/data.json'
   }, function (err, result) {
     if (err) return console.error(err)
-    console.log(result)
+    console.log(JSON.stringify(result));
   });
   res.send(JSON.stringify({"status":200}));
 });
