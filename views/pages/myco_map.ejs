@@ -8,7 +8,19 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script type="text/javascript">
     function init() {
-      ;
+      initMap();
+    }
+
+    function initMap() {
+      var sjsu = {lat: 37.3352, lng: 121.8811};
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 4,
+        center: sjsu
+      });
+      var marker = new google.maps.Marker({
+        position: sjsu,
+        map: map
+      });
     }
   </script>
 </head>
@@ -17,9 +29,12 @@
 
   <% include ../partials/nav.ejs %>
 
+  <div id="map"></div>
+
+  <!--
   <div id="mainDiv">
     <a type="button" class="btn btn-md btn-default" href="/test">Seneca!</a>
-  </div>
+  </div>-->
 
 </body>
 </html>
