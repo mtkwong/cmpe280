@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const seneca = require('seneca')();
+const axios = require('axios');
 const PORT = process.env.PORT || 5555;
 const app = express();
 const { Client } = require('pg');
@@ -58,8 +59,9 @@ app.get('/retrieveInfo', async function(req, res) {
  * MyCO Google Map                   *
  *************************************/
 
-seneca.add('role:math,cmd:sum', (msg, reply) => {
-  reply(null, {answer: (msg.left + msg.right)})
+seneca.add('role:map,cmd:getData', async function (msg, reply) {
+  const json = await axios.get(msg.url);
+  reply(null, json)
 });
 
 app.get('/mycoMap', (req, res) => {
@@ -67,11 +69,15 @@ app.get('/mycoMap', (req, res) => {
 });
 
 app.get('/test', (req, res) => {
-  seneca.act({role: 'math', cmd: 'sum', left: 1, right: 2}, function (err, result) {
+  seneca.act({
+    role: 'map',
+    cmd: 'getData',
+    url:'https://raw.githubusercontent.com/mtkwong/cmpe280/master/data.json'
+  }, function (err, result) {
     if (err) return console.error(err)
     console.log(result)
   });
-  res.sendStatus(200);
+  res.send(JSON.stringify({"status":200}));
 });
 
 var server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
