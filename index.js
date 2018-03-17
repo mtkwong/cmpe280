@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-//const multer = require('multer');
+const seneca = require('seneca')();
 const PORT = process.env.PORT || 5555;
 const app = express();
 const { Client } = require('pg');
@@ -18,7 +18,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => res.render('pages/index'));
-app.get('/healthcamp', (req, res) => {
+
+/*************************************
+ * Health Camp SPA                   *
+ *************************************/
+app.get('/healthCamp', (req, res) => {
   res.render('pages/health_camp_spa');
   dbClient.connect();
 });
@@ -48,6 +52,26 @@ app.post('/saveHealthInfo', function(req, res) {
 app.get('/retrieveInfo', async function(req, res) {
   const { rows } = await dbClient.query("SELECT * FROM healthrecords");
   res.send(JSON.stringify(rows));
+});
+
+/*************************************
+ * MyCO Google Map                   *
+ *************************************/
+
+seneca.add('role:math,cmd:sum', (msg, reply) => {
+  reply(null, {answer: (msg.left + msg.right)})
+});
+
+app.get('/mycoMap', (req, res) => {
+  res.render('pages/myco_map');
+});
+
+app.get('/test', (req, res) => {
+  seneca.act({role: 'math', cmd: 'sum', left: 1, right: 2}, function (err, result) {
+    if (err) return console.error(err)
+    console.log(result)
+  });
+  res.sendStatus(200);
 });
 
 var server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
