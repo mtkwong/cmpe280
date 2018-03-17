@@ -36,6 +36,7 @@
             var marker = new google.maps.Marker({
               position: new google.maps.LatLng(loc.latitude, loc.longitude),
               icon: icons[loc.type],
+              label: loc.id + ': ' + loc.address,
               map: map
             });
           }
