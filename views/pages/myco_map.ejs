@@ -16,7 +16,15 @@
     </script>-->
   <script type="text/javascript">
     function init() {
-      initMap();
+      var map = initMap();
+
+      $.ajax({
+        url: "/getMapData",
+        type: "GET",
+        success: function(res) {
+          console.log(JSON.parse(res));
+        }
+      });   
     }
 
     function initMap() {
@@ -29,6 +37,7 @@
         position: sjsu,
         map: map
       });
+      return map;
     }
   </script>
 </head>

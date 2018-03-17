@@ -60,6 +60,7 @@ app.get('/retrieveInfo', async function(req, res) {
  *************************************/
 
 seneca.add('role:map,cmd:getData', async function (msg, reply) {
+  // GET the JSON map data from the provided URL
   const response = await axios.get(msg.url);
   reply(null, response.data)
 });
@@ -68,7 +69,7 @@ app.get('/mycoMap', (req, res) => {
   res.render('pages/myco_map');
 });
 
-app.get('/test', (req, res) => {
+app.get('/getMapData', (req, res) => {
   seneca.act({
     role: 'map',
     cmd: 'getData',
@@ -76,7 +77,7 @@ app.get('/test', (req, res) => {
   }, function (err, result) {
     if (err) return console.error(err)
     console.log(JSON.stringify(result));
-    res.send(JSON.stringify({"status":200}));
+    res.send(JSON.stringify(result));
   });
   //res.send(JSON.stringify({"status":200}));
 });
