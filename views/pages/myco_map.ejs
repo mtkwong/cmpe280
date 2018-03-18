@@ -24,11 +24,23 @@
         success: function(res) {
           var json = JSON.parse(res);
           var locArr = json.locations.location;
-          var icons = {
-            "Distribution Facility": "http://www.googlemapsmarkers.com/v1/fc382a/",
-            "HeadQuarters": "http://www.googlemapsmarkers.com/v1/ffffff/",
-            "Call Center": "http://www.googlemapsmarkers.com/v1/8ce0ff/",
-            "RetailLocation": "http://www.googlemapsmarkers.com/v1/32d137/",
+          var locTypes = {
+            "Distribution Facility": {
+              marker: "http://www.googlemapsmarkers.com/v1/fc382a/",
+              color: '#fc382a'
+            },
+            "HeadQuarters": {
+              marker: "http://www.googlemapsmarkers.com/v1/ffffff/",
+              color: '#ffffff'
+            },
+            "Call Center": {
+              marker: "http://www.googlemapsmarkers.com/v1/8ce0ff/",
+              color: '#8ce0ff'
+            },
+            "RetailLocation": {
+              marker: "http://www.googlemapsmarkers.com/v1/32d137/",
+              color: '#32d137'
+            }
           }
 
           for(var i=0; i<locArr.length; i++) {
@@ -36,17 +48,17 @@
             var pos = new google.maps.LatLng(loc.latitude, loc.longitude);
             var marker = new google.maps.Marker({
               position: pos,
-              icon: icons[loc.type],
+              icon: locTypes[loc.type].marker,
               label: loc.id + ': ' + loc.address,
               map: map
             });
 
             var circle = new google.maps.Circle({
-              strokeColor: '#FF0000',
+              strokeColor: locTypes[loc.type].color,
               strokeOpacity: 0.8,
               strokeWeight: 2,
-              fillColor: '#FF0000',
-              fillOpacity: 0.35,
+              fillColor: locTypes[loc.type].color,
+              fillOpacity: 0.25,
               map: map,
               center: pos,
               radius: Math.sqrt(loc.$revenue)
