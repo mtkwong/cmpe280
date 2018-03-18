@@ -23,10 +23,6 @@
     }
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <!--<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
-    </script>-->
   <script type="text/javascript">
     function init() {
       var map = initMap();
@@ -99,11 +95,7 @@
       var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
         center: center
-      });/*
-      var marker = new google.maps.Marker({
-        position: center,
-        map: map
-      });*/
+      });
       return map;
     }
   </script>
@@ -117,11 +109,6 @@
   <div id="legend"></div>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdBpHQeF4cEh5apJbUgwVLdiDp7erK4LE&callback=initMap"
     async defer></script>
-  
-  <!--
-  <br/><div id="mainDiv">
-    <a type="button" class="btn btn-md btn-default" href="/getMapData">Seneca!</a>
-  </div>-->
 
 </body>
 </html>

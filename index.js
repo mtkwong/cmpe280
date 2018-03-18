@@ -79,7 +79,6 @@ app.get('/getMapData', (req, res) => {
     console.log(JSON.stringify(result));
     res.send(JSON.stringify(result));
   });
-  //res.send(JSON.stringify({"status":200}));
 });
 
 var server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
