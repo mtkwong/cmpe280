@@ -33,7 +33,7 @@
 
           for(var i=0; i<locArr.length; i++) {
             var loc = locArr[i];
-            var pos = new google.maps.LatLng(loc.latitude, loc.longitude),
+            var pos = new google.maps.LatLng(loc.latitude, loc.longitude);
             var marker = new google.maps.Marker({
               position: pos,
               icon: icons[loc.type],
