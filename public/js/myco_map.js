@@ -1,5 +1,9 @@
-function init() {
-  var map = initMap();
+window.onload = function () {
+  var center = {lat: 37.382093, lng: -122.001715};
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 10,
+    center: center
+  });
 
   $.ajax({
     url: "/getMapData",
@@ -62,13 +66,4 @@ function init() {
       map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
     }
   });   
-}
-
-function initMap() {
-  var center = {lat: 37.382093, lng: -122.001715};
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 10,
-    center: center
-  });
-  return map;
-}
+};
