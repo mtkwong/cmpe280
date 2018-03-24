@@ -1,12 +1,11 @@
-function initMap() {}
-
-$(() => {
-  initMap = function() {
+function init() {
+  /*
     var center = {lat: 37.382093, lng: -122.001715};
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 10,
       center: center
-    });
+    });*/
+    var map = initMap();
 
     $.ajax({
       url: "/getMapData",
@@ -70,4 +69,14 @@ $(() => {
       }
     });
   }
-});
+};
+
+function initMap() {
+  var center = {lat: 37.382093, lng: -122.001715};
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 10,
+    center: center
+  });
+
+  return map;
+}
