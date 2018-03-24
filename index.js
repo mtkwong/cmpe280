@@ -81,6 +81,14 @@ app.get('/getMapData', (req, res) => {
   });
 });
 
+/*************************************
+ * General Practitioner Chatbot      *
+ *************************************/
+
+app.get('/gpChat', (req, res) => {
+  res.render('pages/gp_chatbot');
+});
+
 var server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 function stop() {
