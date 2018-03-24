@@ -69,7 +69,6 @@ function init() {
       }
     });
   }
-};
 
 function initMap() {
   var center = {lat: 37.382093, lng: -122.001715};
