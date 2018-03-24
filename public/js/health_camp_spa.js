@@ -1,7 +1,7 @@
 var id=0; // Current ID, for inserting into database
 var pngUrl;
 
-window.onload = function () {
+$(document).ready(function() {
   // Prepare camera capture
   const player = document.getElementById('player');
   const canvas = document.getElementById('canvas');
@@ -23,7 +23,7 @@ window.onload = function () {
     .then((stream) => {
       player.srcObject = stream;
     });
-};
+});
 
 // Show the appropriate content depending on which menubar item is clicked
 function showDiv(name) {
