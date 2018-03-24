@@ -1,0 +1,34 @@
+body{margin:0px;}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #052a66;
+}
+#mainDiv{position:relative;}
+.hz{float:left;}
+li.menu {float: right;}
+#title, li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 17px 25px;
+    text-decoration: none;
+    font-family: "Arial";
+}
+li a:hover {background-color: #6dbae8;}
+li a.currentTab{background-color: #6dbae8;}
+div.contentDiv{text-align:center;padding:40px 100px;}
+p{display:table-row;}
+label{display:table-cell;font-family:"Arial";font-size:14pt;text-align:right;}
+input,select,textarea{display:table-cell;font-family:"Arial";font-size:14pt;}
+button{background-color:#1fa51a;padding:7px 14px;color:white;font-size:14pt;
+  border:2px solid #11680e;border-radius:5px;}
+button:hover{background-color:#11680e;}
+input.hvInput{margin:10px 10px;}
+table,tr,td{border-collapse:collapse;border:2px solid #125184;font-family:"Arial";}
+thead>tr>td{padding:8px 30px;background-color:#1576c4;color:white;}
+tbody>tr>td{padding:5px 5px;color:black;}
+tbody>tr.even{background-color:#9bc6e8;}
+tbody>tr.odd{background-color:#c6dff2;}
