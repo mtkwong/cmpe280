@@ -1,4 +1,4 @@
-function initMap() {} // now it IS a function and it is in global
+function initMap() {}
 
 $(() => {
   initMap = function() {
