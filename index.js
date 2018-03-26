@@ -91,7 +91,8 @@ app.get('/gpChat', (req, res) => {
   res.render('pages/gp_chatbot');
 });
 
-const wss = new SocketServer({ server });
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ server });
 wss.on('connection', (ws) => {
   console.log('Client connected');
   ws.on('close', () => console.log('Client disconnected'));
