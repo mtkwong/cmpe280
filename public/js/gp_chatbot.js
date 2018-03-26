@@ -15,6 +15,7 @@ function setUsername() {
 
 function connect() {
   var serverUrl = "wss://" + window.location.hostname + ":6502";
+  //var serverUrl = "wss://mtkwong-cmpe280.herokuapp.com/gpChat:6502";
 
   connection = new WebSocket(serverUrl);
 
