@@ -98,6 +98,7 @@ var connectionArray = [];
 var nextID = Date.now();
 var appendToMakeUnique = 1;
 
+/*
 var httpServer = http.createServer(function(request, response) {
     console.log((new Date()) + " Received request for " + request.url);
     response.writeHead(404);
@@ -107,12 +108,14 @@ var httpServer = http.createServer(function(request, response) {
 httpServer.listen(6502, function() {
     console.log((new Date()) + " Server is listening on port 6502");
 });
+*/
 
 // Create the WebSocket server
 var wsServer = new WebSocketServer({
-    httpServer: httpServer,
+    httpServer: server,
     autoAcceptConnections: true // You should use false here!
 });
+console.log(PORT);
 
 function originIsAllowed(origin) {
   // This is where you put code to ensure the connection should
@@ -257,7 +260,7 @@ wsServer.on('connect', function(connection) {
  * Other functionality               *
  *************************************/
 
-var server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+var server = app.listen(6502, () => console.log("Listening on 6502"/*`Listening on ${ PORT }`*/));
 
 function stop() {
   dbClient.end();
