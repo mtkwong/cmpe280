@@ -20,6 +20,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => res.render('pages/index'));
 
+var server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+
 /*************************************
  * Health Camp SPA                   *
  *************************************/
@@ -89,6 +91,18 @@ app.get('/gpChat', (req, res) => {
   res.render('pages/gp_chatbot');
 });
 
+const wss = new SocketServer({ server });
+wss.on('connection', (ws) => {
+  console.log('Client connected');
+  ws.on('close', () => console.log('Client disconnected'));
+});
+setInterval(() => {
+  wss.clients.forEach((client) => {
+    client.send(new Date().toTimeString());
+  });
+}, 1000);
+
+/*
 var http = require('http');
 var url = require('url');
 var fs = require('fs');
@@ -98,7 +112,6 @@ var connectionArray = [];
 var nextID = Date.now();
 var appendToMakeUnique = 1;
 
-/*
 var httpServer = http.createServer(function(request, response) {
     console.log((new Date()) + " Received request for " + request.url);
     response.writeHead(404);
@@ -108,14 +121,12 @@ var httpServer = http.createServer(function(request, response) {
 httpServer.listen(6502, function() {
     console.log((new Date()) + " Server is listening on port 6502");
 });
-*/
 
 // Create the WebSocket server
 var wsServer = new WebSocketServer({
     httpServer: server,
     autoAcceptConnections: true // You should use false here!
 });
-console.log(PORT);
 
 function originIsAllowed(origin) {
   // This is where you put code to ensure the connection should
@@ -254,13 +265,11 @@ wsServer.on('connect', function(connection) {
     sendUserListToAll();  // Update the user lists
     console.log((new Date()) + " Peer " + connection.remoteAddress + " disconnected.");
   });
-});
+});*/
 
 /*************************************
  * Other functionality               *
  *************************************/
-
-var server = app.listen(6502, () => console.log("Listening on 6502"/*`Listening on ${ PORT }`*/));
 
 function stop() {
   dbClient.end();
