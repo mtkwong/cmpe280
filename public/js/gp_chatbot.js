@@ -10,7 +10,7 @@ function setUsername() {
     date: Date.now(),
     id: clientID,
     type: "username",
-    color: getRandomColor();
+    color: getRandomColor()
   };
   connection.send(JSON.stringify(msg));
 }
