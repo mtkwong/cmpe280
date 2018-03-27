@@ -1,16 +1,19 @@
 var connection = null;
 var clientID = 0;
 var WebSocket = WebSocket || MozWebSocket;
+var idColors = {};
 var g = 0.618033988749895;
 var h = Math.random();
 
 function setUsername() {
+  var clr = getRandomColor();
+  idColors[clientID] = clr;
   var msg = {
     name: document.getElementById("name").value,
     date: Date.now(),
     id: clientID,
     type: "username",
-    color: getRandomColor()
+    color: clr
   };
   connection.send(JSON.stringify(msg));
 }
@@ -72,7 +75,8 @@ function send() {
     text: document.getElementById("text").value,
     type: "message",
     id: clientID,
-    date: Date.now()
+    date: Date.now(),
+    color: idColors[clientID]
   };
   connection.send(JSON.stringify(msg));
   document.getElementById("text").value = "";
