@@ -13,7 +13,7 @@
   <% include ../partials/nav.ejs %>
   <div id="server-time"></div>
   <script type="text/javascript">
-    var HOST = location.origin.replace(/^http/, 'ws')
+    var HOST = location.origin.replace(/^http/, 'wss')
     var ws = new WebSocket(HOST);
     var el = document.getElementById('server-time');
 
