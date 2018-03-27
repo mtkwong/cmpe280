@@ -41,7 +41,7 @@ function connect() {
         text = "<b>User <em>" + msg.name + "</em> signed in at " + timeStr + "</b><br>";
         break;
       case "message":
-        text = "(" + timeStr + ") <b>" + msg.name + "</b>: " + msg.text + "<br>";
+        text = "(" + timeStr + ") <span style='font-weight:bold;color:" + msg.color + ";'>" + msg.name + "</span>: " + msg.text + "<br>";
         break;
       case "rejectusername":
         text = "<b>Your username has been set to <em>" + msg.name + "</em> because the name you chose is in use.</b><br>";
