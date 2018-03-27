@@ -179,6 +179,27 @@ function sendUserListToAll() {
     connectionArray[i].send(userListMsgStr);
   }
 }
+function gpResponse(q) {
+  var defaultRes = "I'm sorry, I don't know the answer to that. Have you tried Google?";
+  var res = {
+    "is bronchitis contagious?": "For the most part, bacterial bronchitis is not contagious.",
+    "is pneumonia contagious?": "Yes; however, it stops being contagious when coughing stops.",
+    "how much water should i drink?": "Take your weight (in pounds) and divide it in half, to get the number of ounces of water you should drink daily.",
+    "how many calories should i eat?": "What's more important than calories is that you eat well-balanced meals and exercise portion control.",
+    "what is lupus?": "Lupus, short for systemic lupus erythematosus, is a chronic autoimmune disease that can affect the skin, kidneys, joints, heart, nervous system, and blood cells.",
+    "what is gluten?": "Gluten is a protein found in wheat, barley, and rye.",
+    "how long does the flu last?": "The typical flu lasts seven to ten days. Drink plenty of fluids, wash your hands frequently, and eat vitamin D-fortified foods like orange juice and yogurt.",
+    "can i drink tap water?": "Yes - unless you're on a private well, tap water comes from municipal treatment plants that are carefully monitored and better regulated than bottled water.",
+    "is my microwave giving me cancer?": "No. Microwaving doesn't alter food in any way that could make you sick.",
+    "do i have asthma?": "You might have asthma if you experience frequent coughing, trouble breathing, or recurring bronchitis.",
+    "are vaccines safe?": "Yes.",
+    "do i have diabetes?": "Warning signs for diabetes are: extreme thirst, dry mouth, frequent urination, hunger, fatigue, and blurred vision.",
+    "do i have the flu?": "Flu symptoms are: muscle pain, cough, chills, fatigue, fever, congestion, and runny nose.",
+    "do i have bronchitis?": "Bronchitis symptoms are: chronic or dry cough with phlegm, fatigue, and runny nose.",
+    "do i have pneumonia?": "Pneumonia symptoms are: sharp chest pain, fever, chills, dehydration, fatigue, loss of appetite, and shortness of breath.",
+  };
+  return res[q] || defaultRes;
+}
 
 //wsServer.on('connect', function(connection) {
 wss.on('connection', function(connection) {
@@ -220,6 +241,24 @@ wss.on('connection', function(connection) {
       case "message":
         msg.name = connect.username;
         msg.text = msg.text.replace(/(<([^>]+)>)/ig,"");
+        var msg2 = {
+          name: "GP Chatbot",
+          text: gpResponse(msg.text.toLowerCase())
+        };
+
+        // Convert the message back to JSON and send it out
+        // to all clients.
+        if (sendToClients) {
+          var msgString = JSON.stringify(msg);
+          var msg2String = JSON.stringify(msg2);
+          var i;
+
+          for (i=0; i<connectionArray.length; i++) {
+            connectionArray[i].send(msgString);
+            connectionArray[i].send(msg2String);
+          }
+        }
+
         break;
       case "username":
         var nameChanged = false;
@@ -242,19 +281,19 @@ wss.on('connection', function(connection) {
 
         connect.username = msg.name;
         sendUserListToAll();
+
+        // Convert the message back to JSON and send it out
+        // to all clients.
+        if (sendToClients) {
+          var msgString = JSON.stringify(msg);
+          var i;
+
+          for (i=0; i<connectionArray.length; i++) {
+            connectionArray[i].send(msgString);
+          }
+        }
+
         break;
-    }
-
-    // Convert the message back to JSON and send it out
-    // to all clients.
-
-    if (sendToClients) {
-      var msgString = JSON.stringify(msg);
-      var i;
-
-      for (i=0; i<connectionArray.length; i++) {
-        connectionArray[i].send(msgString);
-      }
     }
   });
   

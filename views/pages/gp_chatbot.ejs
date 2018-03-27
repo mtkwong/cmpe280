@@ -22,10 +22,8 @@
     };
   </script>-->
 
-  <p>This is a simple chat system implemented using WebSockets. It works by sending packets of JSON back and forth with the server.</p>
-  <p>This text and audio/video chat example is offered as-is
-    for demonstration purposes only, and should not be used for any other
-    purpose.</p>
+  <h1>General Practitioner Chatbot</h1>
+  <p>Hello, I am the General Practitioner Chatbot! Please feel free to ask any medical-related questions, and I will try my best to answer you.</p>
   <p>Enter a username: <input id="name" type="text" maxlength="12" placeholder="Your name">
   <input type="button" name="login" value="Log in" onclick="connect()"></p>
   <table border="0" width="100%">
@@ -39,7 +37,7 @@
   <td>&nbsp;</td>
   <td>
   <p>
-  Chat: <input id="text" type="text" name="text" size="80" maxlength="256" placeholder="Chat with us!" autocomplete="off"onkeyup="handleKey(event)" disabled>
+  Chat: <input id="text" type="text" name="text" size="80" maxlength="256" placeholder="What are your symptoms?" autocomplete="off"onkeyup="handleKey(event)" disabled>
   <input type="button" id="send" name="send" value="Send" onclick="send()" disabled></p></td>
   </td>
   </tr>

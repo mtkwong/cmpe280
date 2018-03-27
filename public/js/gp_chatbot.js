@@ -59,7 +59,8 @@ function connect() {
 
     if (text.length) {
       f.write(text);
-      document.getElementById("chatbox").contentWindow.scrollByPages(1);
+      var cw = document.getElementById("chatbox").contentWindow;
+      cw.scrollBy(0, cw.innerHeight);
     }
   };
 }
