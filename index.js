@@ -201,7 +201,7 @@ wss.on('connection', function(connection) {
     type: "id",
     id: connection.clientID
   };
-  connection.sendUTF(JSON.stringify(msg));
+  connection.send(JSON.stringify(msg));
 
   // Handle the "message" event received over WebSocket. This
   // is a message sent by a client, and may be text to share with
