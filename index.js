@@ -176,7 +176,7 @@ function sendUserListToAll() {
   var userListMsgStr = JSON.stringify(userListMsg);
   var i;
   for (i=0; i<connectionArray.length; i++) {
-    connectionArray[i].sendUTF(userListMsgStr);
+    connectionArray[i].send(userListMsgStr);
   }
 }
 
@@ -208,55 +208,52 @@ wss.on('connection', function(connection) {
   // other users or a command to the server.
 
   connection.on('message', function(message) {
-    console.log(message);
-    if (message.type === 'utf8') {
-      console.log("Received Message: " + message.utf8Data);
+    console.log("Received Message: " + message);
 
-      // Process messages
+    // Process messages
 
-      var sendToClients = true;
-      msg = JSON.parse(message.utf8Data);
-      var connect = getConnectionForID(msg.id);
+    var sendToClients = true;
+    msg = JSON.parse(message);
+    var connect = getConnectionForID(msg.id);
 
-      switch(msg.type) {
-        case "message":
-          msg.name = connect.username;
-          msg.text = msg.text.replace(/(<([^>]+)>)/ig,"");
-          break;
-        case "username":
-          var nameChanged = false;
-          var origName = msg.name;
+    switch(msg.type) {
+      case "message":
+        msg.name = connect.username;
+        msg.text = msg.text.replace(/(<([^>]+)>)/ig,"");
+        break;
+      case "username":
+        var nameChanged = false;
+        var origName = msg.name;
 
-          while (!isUsernameUnique(msg.name)) {
-            msg.name = origName + appendToMakeUnique;
-            appendToMakeUnique++;
-            nameChanged = true;
-          }
-
-          if (nameChanged) {
-            var changeMsg = {
-              id: msg.id,
-              type: "rejectusername",
-              name: msg.name
-            };
-            connect.sendUTF(JSON.stringify(changeMsg));
-          }
-
-          connect.username = msg.name;
-          sendUserListToAll();
-          break;
-      }
-
-      // Convert the message back to JSON and send it out
-      // to all clients.
-
-      if (sendToClients) {
-        var msgString = JSON.stringify(msg);
-        var i;
-
-        for (i=0; i<connectionArray.length; i++) {
-          connectionArray[i].sendUTF(msgString);
+        while (!isUsernameUnique(msg.name)) {
+          msg.name = origName + appendToMakeUnique;
+          appendToMakeUnique++;
+          nameChanged = true;
         }
+
+        if (nameChanged) {
+          var changeMsg = {
+            id: msg.id,
+            type: "rejectusername",
+            name: msg.name
+          };
+          connect.sendUTF(JSON.stringify(changeMsg));
+        }
+
+        connect.username = msg.name;
+        sendUserListToAll();
+        break;
+    }
+
+    // Convert the message back to JSON and send it out
+    // to all clients.
+
+    if (sendToClients) {
+      var msgString = JSON.stringify(msg);
+      var i;
+
+      for (i=0; i<connectionArray.length; i++) {
+        connectionArray[i].send(msgString);
       }
     }
   });
