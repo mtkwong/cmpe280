@@ -245,7 +245,7 @@ wss.on('connection', function(connection) {
           date: msg.data,
           id: msg.id,
           name: "GP Chatbot",
-          text: gpResponse(msg.text.toLowerCase())
+          text: gpResponse(msg.text.toLowerCase()),
           type: msg.type
         };
 
