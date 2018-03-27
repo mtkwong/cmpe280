@@ -28,6 +28,7 @@ function connect() {
     var f = document.getElementById("chatbox").contentDocument;
     var text = "";
     var msg = JSON.parse(evt.data);
+    console.log(msg);
     var time = new Date(msg.date);
     var timeStr = time.toLocaleTimeString();
 
