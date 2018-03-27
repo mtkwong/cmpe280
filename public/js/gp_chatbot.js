@@ -1,14 +1,16 @@
 var connection = null;
 var clientID = 0;
-
 var WebSocket = WebSocket || MozWebSocket;
+var g = 0.618033988749895;
+var h = Math.random();
 
 function setUsername() {
   var msg = {
     name: document.getElementById("name").value,
     date: Date.now(),
     id: clientID,
-    type: "username"
+    type: "username",
+    color: getRandomColor();
   };
   connection.send(JSON.stringify(msg));
 }
@@ -38,7 +40,7 @@ function connect() {
         setUsername();
         break;
       case "username":
-        text = "<b>User <em>" + msg.name + "</em> signed in at " + timeStr + "</b><br>";
+        text = "<b>User <span style='color:" + msg.color + ";'>" + msg.name + "</span> signed in at " + timeStr + "</b><br>";
         break;
       case "message":
         text = "(" + timeStr + ") <span style='font-weight:bold;color:" + msg.color + ";'>" + msg.name + "</span>: " + msg.text + "<br>";
@@ -82,4 +84,36 @@ function handleKey(evt) {
       send();
     }
   }
+}
+
+function HSVtoRGB(h, s, v) {
+  var r, g, b, i, f, p, q, t;
+  if (arguments.length === 1) {
+    s = h.s, v = h.v, h = h.h;
+  }
+  i = Math.floor(h * 6);
+  f = h * 6 - i;
+  p = v * (1 - s);
+  q = v * (1 - f * s);
+  t = v * (1 - (1 - f) * s);
+  switch (i % 6) {
+    case 0: r = v, g = t, b = p; break;
+    case 1: r = q, g = v, b = p; break;
+    case 2: r = p, g = v, b = t; break;
+    case 3: r = p, g = q, b = v; break;
+    case 4: r = t, g = p, b = v; break;
+    case 5: r = v, g = p, b = q; break;
+  }
+  return {
+    r: Math.round(r * 255),
+    g: Math.round(g * 255),
+    b: Math.round(b * 255)
+  };
+}
+
+function getRandomColor() {
+  h += g;
+  h %= 1;
+  rgb = HSVtoRGB(h, 0.5, 0.95);
+  return '#' + rgb.r.toString(16) + rgb.g.toString(16) + rgb.b.toString(16);
 }
