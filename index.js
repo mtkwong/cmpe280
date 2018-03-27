@@ -242,7 +242,7 @@ wss.on('connection', function(connection) {
         msg.name = connect.username;
         msg.text = msg.text.replace(/(<([^>]+)>)/ig,"");
         var msg2 = {
-          date: msg.data,
+          date: msg.date,
           id: msg.id,
           name: "GP Chatbot",
           text: gpResponse(msg.text.toLowerCase()),
