@@ -179,6 +179,14 @@ function sendUserListToAll() {
     connectionArray[cl-1].send(userListMsgStr);
   }
 }
+function getRandomColor() {
+  var letters = '789ABCD';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.round(Math.random() * 6)];
+  }
+  return color;
+}
 function gpResponse(q) {
   var defaultRes = "I'm sorry, I don't know the answer to that. Have you tried Google?";
   var res = {
@@ -241,12 +249,14 @@ wss.on('connection', function(connection) {
       case "message":
         msg.name = connect.username;
         msg.text = msg.text.replace(/(<([^>]+)>)/ig,"");
+        msg.color = getRandomColor();
         var msg2 = {
           date: msg.date,
           id: msg.id,
           name: "GP Chatbot",
           text: gpResponse(msg.text.toLowerCase()),
-          type: msg.type
+          type: msg.type,
+          color: "#000000"
         };
 
         // Convert the message back to JSON and send it to the most recent client.
