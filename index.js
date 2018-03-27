@@ -93,26 +93,29 @@ app.get('/gpChat', (req, res) => {
 
 const WebSocket = require('ws');
 const wss = new WebSocket.Server({ server });
+/*
 wss.on('connection', (ws) => {
-  console.log('Client connected');
-  ws.on('close', () => console.log('Client disconnected'));
-});
+  //console.log('Client connected');
+  //ws.on('close', () => console.log('Client disconnected'));
+
+});*/
+/*
 setInterval(() => {
   wss.clients.forEach((client) => {
     client.send(new Date().toTimeString());
   });
-}, 1000);
+}, 1000);*/
 
-/*
-var http = require('http');
+
+//var http = require('http');
 var url = require('url');
 var fs = require('fs');
-var WebSocketServer = require('websocket').server;
+//var WebSocketServer = require('websocket').server;
 
 var connectionArray = [];
 var nextID = Date.now();
 var appendToMakeUnique = 1;
-
+/*
 var httpServer = http.createServer(function(request, response) {
     console.log((new Date()) + " Received request for " + request.url);
     response.writeHead(404);
@@ -127,7 +130,7 @@ httpServer.listen(6502, function() {
 var wsServer = new WebSocketServer({
     httpServer: server,
     autoAcceptConnections: true // You should use false here!
-});
+});*/
 
 function originIsAllowed(origin) {
   // This is where you put code to ensure the connection should
@@ -177,7 +180,8 @@ function sendUserListToAll() {
   }
 }
 
-wsServer.on('connect', function(connection) {
+//wsServer.on('connect', function(connection) {
+wss.on('connection', function(connection) {
 //  if (!originIsAllowed(connection.origin)) {
 //    request.reject();
 //    console.log((new Date()) + "Connection from " + connection.origin + " rejected.");
@@ -266,7 +270,7 @@ wsServer.on('connect', function(connection) {
     sendUserListToAll();  // Update the user lists
     console.log((new Date()) + " Peer " + connection.remoteAddress + " disconnected.");
   });
-});*/
+});
 
 /*************************************
  * Other functionality               *
