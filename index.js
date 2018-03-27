@@ -239,7 +239,7 @@ wss.on('connection', function(connection) {
           var changeMsg = {
             id: msg.id,
             type: "rejectusername",
-            name: msg.name
+            name: msg.name,
             color: msg.color
           };
           connect.send(JSON.stringify(changeMsg));
