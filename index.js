@@ -174,9 +174,9 @@ function makeUserListMessage() {
 function sendUserListToAll() {
   var userListMsg = makeUserListMessage();
   var userListMsgStr = JSON.stringify(userListMsg);
-  var i;
-  for (i=0; i<connectionArray.length; i++) {
-    connectionArray[i].send(userListMsgStr);
+  var cl = connectionArray.length;
+  if(cl > 0) {
+    connectionArray[cl-1].send(userListMsgStr);
   }
 }
 function gpResponse(q) {
@@ -249,17 +249,12 @@ wss.on('connection', function(connection) {
           type: msg.type
         };
 
-        // Convert the message back to JSON and send it out
-        // to all clients.
+        // Convert the message back to JSON and send it to the most recent client.
         if (sendToClients) {
           var msgString = JSON.stringify(msg);
-          var msg2String = JSON.stringify(msg2);
-          var i;
-
-          for (i=0; i<connectionArray.length; i++) {
-            connectionArray[i].send(msgString);
-            connectionArray[i].send(msg2String);
-          }
+          var msgString2 = JSON.stringify(msg2);
+          connectionArray[connectionArray.length-1].send(msgString);
+          connectionArray[connectionArray.length-1].send(msgString2);
         }
 
         break;
@@ -285,15 +280,10 @@ wss.on('connection', function(connection) {
         connect.username = msg.name;
         sendUserListToAll();
 
-        // Convert the message back to JSON and send it out
-        // to all clients.
+        // Convert the message back to JSON and send it to the most recent client.
         if (sendToClients) {
           var msgString = JSON.stringify(msg);
-          var i;
-
-          for (i=0; i<connectionArray.length; i++) {
-            connectionArray[i].send(msgString);
-          }
+          connectionArray[connectionArray.length-1].send(msgString);
         }
 
         break;
