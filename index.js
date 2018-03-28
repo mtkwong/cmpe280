@@ -145,7 +145,7 @@ function sendUserListToAll() {
     connectionArray[cl-1].send(userListMsgStr);
   }
 }
-function gpResponse(q) {
+function gpFixedResponse(q) {
   var defaultRes = "I'm sorry, I don't know the answer to that. Have you tried Google?";
   var res = {
     "is bronchitis contagious?": "For the most part, bacterial bronchitis is not contagious.",
@@ -166,21 +166,28 @@ function gpResponse(q) {
   };
   return res[q] || defaultRes;
 }
+function gpRuleResponse(q) {
+  var ret;
+  var defaultRes = "I'm sorry, I don't know the answer to that. Have you tried Google?";
+  if (q.indexOf("headache") > -1) { ret = "Have you taken a midterm exam recently?"; }
+  else if (q.indexOf("feeling drowsy") > -1) { ret = "Do you have flu symptoms, like cold & fever?"; }
+  else if (q.indexOf("not exercising") > -1) { ret = "Do you want me to setup a general checkup?"; }
+  else if (q.indexOf("stressed") > -1) { ret = "Are you taking any summer internships?"; }
+  else if (q.indexOf("lonely") > -1) { ret = "Are you a techie?"; }
+  else if (q.indexOf("tired") > -1) { ret = "Are you getting enough sleep?"; }
+  else if (q.indexOf("fatigue") > -1) { ret = "Hmm... you might have a cold or the flu."; }
+  else if (q.indexOf("yes") > -1) { ret = "Okay. I hope you feel better soon."; }
+  else if (q.indexOf("no") > -1) { ret = "Okay. What are your symptoms?"; }
+  else { ret = defaultRes; }
+  return ret;
+}
 
-//wsServer.on('connect', function(connection) {
 wss.on('connection', function(connection) {
-//  if (!originIsAllowed(connection.origin)) {
-//    request.reject();
-//    console.log((new Date()) + "Connection from " + connection.origin + " rejected.");
-//    return;
-//  }
-  
   console.log((new Date()) + " Connection accepted.");
   connectionArray.push(connection);
 
   // Send the new client its token; it will
   // respond with its login username.
-
   connection.clientID = nextID;
   nextID++;
 
@@ -193,12 +200,10 @@ wss.on('connection', function(connection) {
   // Handle the "message" event received over WebSocket. This
   // is a message sent by a client, and may be text to share with
   // other users or a command to the server.
-
   connection.on('message', function(message) {
     console.log("Received Message: " + message);
 
     // Process messages
-
     var sendToClients = true;
     msg = JSON.parse(message);
     var connect = getConnectionForID(msg.id);
@@ -211,7 +216,7 @@ wss.on('connection', function(connection) {
           date: msg.date,
           id: msg.id,
           name: "GP Chatbot",
-          text: gpResponse(msg.text.toLowerCase()),
+          text: gpRuleResponse(msg.text.toLowerCase()),
           type: msg.type,
           color: "#000000"
         };
@@ -260,7 +265,6 @@ wss.on('connection', function(connection) {
   
   // Handle the WebSocket "close" event; this means a user has logged off
   // or has been disconnected.
-  
   connection.on('close', function(connection) {
     connectionArray = connectionArray.filter(function(el, idx, ar) {
       return el.connected;
