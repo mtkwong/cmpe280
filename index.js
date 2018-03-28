@@ -289,6 +289,14 @@ wss.on('connection', function(connection) {
 });
 
 /*************************************
+ * Build Your Own Pizza.             *
+ *************************************/
+
+app.get('/pizza', (req, res) => {
+  res.render('pages/pizza');
+});
+
+/*************************************
  * Other functionality               *
  *************************************/
 
