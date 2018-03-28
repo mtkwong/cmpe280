@@ -90,8 +90,16 @@ app.get('/getMapData', (req, res) => {
  * General Practitioner Chatbot      *
  *************************************/
 
+var gpChatVersion;
+
 app.get('/gpChat', (req, res) => {
   res.render('pages/gp_chatbot');
+  gpChatVersion = 1;
+});
+
+app.get('/gpChat2', (req, res) => {
+  res.render('pages/gp_chatbot');
+  gpChatVersion = 2;
 });
 
 var connectionArray = [];
@@ -212,11 +220,17 @@ wss.on('connection', function(connection) {
       case "message":
         msg.name = connect.username;
         msg.text = msg.text.replace(/(<([^>]+)>)/ig,"");
+        var msg2txt;
+        if(gpChatVersion == 1) {
+          msg2txt = gpFixedResponse(msg.text.toLowerCase());
+        } else if(gpChatVersion == 2) {
+          msg2txt = gpRuleResponse(msg.text.toLowerCase());
+        }
         var msg2 = {
           date: msg.date,
           id: msg.id,
           name: "GP Chatbot",
-          text: gpRuleResponse(msg.text.toLowerCase()),
+          text: msg2txt,
           type: msg.type,
           color: "#000000"
         };
