@@ -2,17 +2,135 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
-  <title>MyCO Map</title>
+  <title>Build Your Own Pizza</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="/js/pizza.js"></script>
   <link rel="stylesheet" type="text/css" href="/css/pizza.css" />
 </head>
 
-<body>
-
+<body onload="init();">
   <% include ../partials/nav.ejs %>
-
-  <div id="test">Hello World</div>
-
+  <h1 id="title">Build Your Own Pizza</h1>
+  <div id="main">
+    <div id="crust">
+      <div class="doneTab col3">SIZE &amp; CRUST</div>
+      <div class="otherTab col3">CHEESE &amp; SAUCE</div>
+      <div class="otherTab col3">TOPPINGS</div>
+      <br/><br/>
+      <div class="row">
+        <h2>CHOOSE SIZE &amp; CRUST</h2>
+        <div class="col4">
+          <h3>HAND TOSSED</h3>
+          <p>Garlic-seasoned crust with a rich, buttery taste.</p>
+          <label><input type="radio" name="crustRadio" value="ht_sm">Small (10")</label><br/>
+          <label><input type="radio" name="crustRadio" value="ht_md">Medium (12")</label><br/>
+          <label><input type="radio" name="crustRadio" value="ht_lg">Large (14")</label><br/>
+          <label><input type="radio" name="crustRadio" value="ht_xl">X-Large (16")</label><br/>
+          <h3>GLUTEN FREE CRUST</h3>
+          <p>Domino's pizza made with a gluten-free crust.</p>
+          <label><input type="radio" name="crustRadio" value="hp_sm">Small (10")</label>
+        </div>
+        <div class="col4">
+          <h3>HANDMADE PAN</h3>
+          <p>Two layers of cheese, toppings to the edge, and a crust that bakes up golden and crispy with a buttery taste.</p>
+          <label><input type="radio" name="crustRadio" value="hp_md">Medium (12")</label>
+        </div>
+        <div class="col4">
+          <h3>CRUNCHY THIN CRUST</h3>
+          <p>Thin enough for the optimum crispy to crunchy ratio.</p>
+          <label><input type="radio" name="crustRadio" value="ct_md">Medium (12")</label><br/>
+          <label><input type="radio" name="crustRadio" value="ct_lg">Large (14")</label>
+        </div>
+        <div class="col4">
+          <h3>BROOKLYN STYLE</h3>
+          <p>Hand-stretched to be big, thin, and perfectly foldable.</p>
+          <label><input type="radio" name="crustRadio" value="bs_lg">Large (14")</label><br/>
+          <label><input type="radio" name="crustRadio" value="bs_xl">X-Large (16")</label>
+        </div>
+      </div>
+    </div>
+    <div id="sauce" style="display: none;">
+      <div class="doneTab col3">SIZE &amp; CRUST</div>
+      <div class="doneTab col3">CHEESE &amp; SAUCE</div>
+      <div class="otherTab col3">TOPPINGS</div>
+      <br/><br/>
+      <div class="row">
+        <h2>CHOOSE CHEESE &amp; SAUCE</h2>
+        <div class="col2">
+          <h3>CHEESE?</h3>
+          <label><input type="checkbox" id="cheeseCheck" name="cheeseCheck" value="cheese">Cheese</label>
+        </div>
+        <div class="col2">
+          <h3>CHOOSE A SAUCE</h3>
+          <label><input type="checkbox" id="sauceCheck" name="sauceCheck" value="sauce">Sauce?</label><br/>
+          <div id="divSauce" style="display:none;">
+            <label><input type="radio" name="sauceRadio" value="rt">Robust Inspired Tomato Sauce</label><br/>
+            <label><input type="radio" name="sauceRadio" value="hm">Hearty Marinara Sauce</label><br/>
+            <label><input type="radio" name="sauceRadio" value="bq">BBQ Sauce</label><br/>
+            <label><input type="radio" name="sauceRadio" value="gp">Garlic Parmesan White Sauce</label><br/>
+            <label><input type="radio" name="sauceRadio" value="as">Alfredo Sauce</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="toppings" style="display: none;">
+      <div class="doneTab col3">SIZE &amp; CRUST</div>
+      <div class="doneTab col3">CHEESE &amp; SAUCE</div>
+      <div class="doneTab col3">TOPPINGS</div>
+      <br/><br/>
+      <div class="row">
+        <h2>CHOOSE TOPPINGS</h2>
+        <div class="col4">
+          <h3>CHOOSE MEATS</h3>
+          <label><input type="checkbox" name="topCheck" value="pp">Pepperoni</label><br/>
+          <label><input type="checkbox" name="topCheck" value="is">Italian Sausage</label><br/>
+          <label><input type="checkbox" name="topCheck" value="si">Sliced Italian Sausage</label><br/>
+          <label><input type="checkbox" name="topCheck" value="bf">Beef</label><br/>
+          <label><input type="checkbox" name="topCheck" value="ps">Philly Steak</label><br/>
+        </div>
+        <div class="col4">
+          <br/><br/><br/>
+          <label><input type="checkbox" name="topCheck" value="hm">Ham</label><br/>
+          <label><input type="checkbox" name="topCheck" value="bc">Bacon</label><br/>
+          <label><input type="checkbox" name="topCheck" value="sl">Salami</label><br/>
+          <label><input type="checkbox" name="topCheck" value="pc">Premium Chicken</label>
+        </div>
+        <div class="col4">
+          <h3>CHOOSE NON-MEATS</h3>
+          <label><input type="checkbox" name="topCheck" value="cc">Cheddar Cheese</label><br/>
+          <label><input type="checkbox" name="topCheck" value="fc">Feta Cheese</label><br/>
+          <label><input type="checkbox" name="topCheck" value="sr">Shredded Parmesan Asiago</label><br/>
+          <label><input type="checkbox" name="topCheck" value="sv">Shredded Provolone Cheese</label><br/>
+          <label><input type="checkbox" name="topCheck" value="bp">Banana Peppers</label><br/>
+          <label><input type="checkbox" name="topCheck" value="bo">Black Olives</label><br/>
+          <label><input type="checkbox" name="topCheck" value="gl">Garlic</label><br/>
+          <label><input type="checkbox" name="topCheck" value="gp">Green Peppers</label>
+        </div>
+        <div class="col4">
+          <br/><br/><br/>
+          <label><input type="checkbox" name="topCheck" value="jp">Jalapeno Peppers</label><br/>
+          <label><input type="checkbox" name="topCheck" value="ms">Mushrooms</label><br/>
+          <label><input type="checkbox" name="topCheck" value="pn">Pineapple</label><br/>
+          <label><input type="checkbox" name="topCheck" value="on">Onions</label><br/>
+          <label><input type="checkbox" name="topCheck" value="rp">Roasted Red Peppers</label><br/>
+          <label><input type="checkbox" name="topCheck" value="sp">Spinach</label><br/>
+          <label><input type="checkbox" name="topCheck" value="dt">Diced Tomatoes</label><br/>
+          <label><input type="checkbox" name="topCheck" value="hs">Hot Sauce</label>
+        </div>
+      </div>
+    </div>
+    <div id="dashboard" style="display: none;">
+      <div id="piechart" class="col2"></div>
+      <div id="sankeychart" class="col2"></div>
+    </div>
+  </div>
+  <div id="divBtns">
+    <button id="btnBack" style="display:none;" onclick="handleBack();">Back</button>
+    <button id="btnNext" onclick="handleNext();">Next</button>
+    <button id="btnFnsh" style="display:none;" onclick="handleFnsh();">Finish</button>
+    <button id="btnHome" style="display:none;" onclick="handleHome();">Home</button>
+  </div>
 </body>
 </html>
 

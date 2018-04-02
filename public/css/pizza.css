@@ -1,0 +1,67 @@
+body {
+  background-color: #6398ed;
+  padding: 50px;
+}
+p, label {
+  font-family: "Arial";
+  font-size: 11pt;
+}
+h1 {
+  padding: 10px;
+  font-family: "Tahoma";
+  text-align: center;
+}
+h2, h3 {
+  font-family: "Tahoma";
+  color: #2789c6;;
+}
+#main {
+  background-color: #cccccc;
+  height: 500px;
+}
+div.doneTab {
+  background-color: #d82b17;
+  border: 2px solid #8c1b0e;
+}
+div.otherTab {
+  background-color: #2789c6;
+  border: 2px solid #175377;
+}
+div.doneTab, div.otherTab {
+  margin: 0px;
+  font-family: "Tahoma";
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
+  height: 50px;
+  box-sizing: border-box;
+}
+div.row {
+  padding: 5px 20px;
+}
+div.col4 {
+  float: left;
+  width: 25%;
+}
+div.col3 {
+  float:left;
+  width: 33.33%;
+}
+div.col2 {
+  float:left;
+  width: 50%;
+}
+#divBtns {
+  text-align: center;
+}
+button {
+  padding: 10px 20px;
+  border: 2px solid white;
+  color: #eeeeee;
+  background-color: #333333;
+  border-radius: 5px;
+  font-size: 16pt;
+}
+button:hover {
+  background-color: #111111;
+}
