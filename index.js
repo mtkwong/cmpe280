@@ -300,14 +300,18 @@ app.get('/pizza', (req, res) => {
  *************************************/
 const redisClient = require('redis').createClient(process.env.REDIS_URL);
 app.get('/cache', (req, res) => {
+  redisClient.del("1", function(err, reply) {});
+  redisClient.del("2", function(err, reply) {});
+  redisClient.del("3", function(err, reply) {});
   res.render('pages/cache');
+  /*
   for(var i=1;i<4;i++) {
     redisClient.exists(i.toString(), function(err, reply) {
       if (reply === 1) {
         redisClient.del(i.toString(), function(err, reply) {});
       }
     });
-  }
+  }*/
 });
 
 app.get('/getImage', (req, res) => {
@@ -318,10 +322,10 @@ app.get('/getImage', (req, res) => {
     if (reply === 1) {
       result["txt"] = "Image loaded from: Redis Cache";
       redisClient.get(id, function(err, reply2) {
-        console.log(reply2);
+        //console.log(reply2);
         result["img"] = reply2;
       });
-      console.log(result);
+      //console.log(result);
       res.send(JSON.stringify(result));
     } else {
       result["txt"] = "Image loaded from: PostgreSQL Database";
