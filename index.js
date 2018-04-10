@@ -331,9 +331,10 @@ app.get('/getImage', (req, res) => {
       result["txt"] = "Image loaded from: PostgreSQL Database";
       const { rows } = await dbClient.query("SELECT * FROM cachetest WHERE ID=" + id);
       var img = rows[0].photo;
-      redisClient.set([id, img]);
+      //console.log(img);
+      redisClient.set(id, img);
       result["img"] = img;
-      console.log(result);
+      //console.log(result);
       res.send(JSON.stringify(result));
     }
   });
