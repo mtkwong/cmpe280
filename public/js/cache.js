@@ -5,6 +5,7 @@ function clickBtn(id) {
     data: "id=" + id.toString(),
     success: function(res) {
       var json = JSON.parse(res);
+      console.log(json);
       $("#imageSource").html(json.txt);
       $("#theImage").attr("src", json.img);
     }

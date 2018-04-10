@@ -327,6 +327,7 @@ app.get('/getImage', (req, res) => {
       result["img"] = img;
     }
   });
+  console.log(result);
   res.send(JSON.stringify(result));
 });
 
