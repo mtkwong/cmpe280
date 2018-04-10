@@ -322,11 +322,11 @@ app.get('/getImage', (req, res) => {
     if (reply === 1) {
       result["txt"] = "Image loaded from: Redis Cache";
       redisClient.get(id, function(err, reply2) {
-        console.log(reply2);
         result["img"] = reply2;
+        res.send(JSON.stringify(result));
       });
       //console.log(result);
-      res.send(JSON.stringify(result));
+      //res.send(JSON.stringify(result));
     } else {
       result["txt"] = "Image loaded from: PostgreSQL Database";
       const { rows } = await dbClient.query("SELECT * FROM cachetest WHERE ID=" + id);
