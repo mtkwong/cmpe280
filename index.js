@@ -313,23 +313,25 @@ app.get('/cache', (req, res) => {
 app.get('/getImage', (req, res) => {
   result = {};
   var id = parseInt(req.query.id).toString();
-  console.log(id);
+  //console.log(id);
   redisClient.exists(id, async function(err, reply) {
     if (reply === 1) {
       result["txt"] = "Image loaded from: Redis Cache";
       redisClient.get(id, function(err, reply) {
         result["img"] = reply;
       });
+      console.log(result);
+      res.send(JSON.stringify(result));
     } else {
       result["txt"] = "Image loaded from: PostgreSQL Database";
       const { rows } = await dbClient.query("SELECT * FROM cachetest WHERE ID=" + id);
       var img = rows[0].photo;
       redisClient.set([id, img]);
       result["img"] = img;
+      console.log(result);
+      res.send(JSON.stringify(result));
     }
   });
-  console.log(result);
-  res.send(JSON.stringify(result));
 });
 
 /*
