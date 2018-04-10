@@ -299,8 +299,8 @@ app.get('/pizza', (req, res) => {
 /*************************************
  * Redis Image Cache                 *
  *************************************/
-const redis = require('redis');
-bluebird.promisifyAll(redis.RedisClient.prototype);
+var redis = require('redis');
+bluebird.promisifyAll(redis);
 redisClient = redis.createClient(process.env.REDIS_URL);
 app.get('/cache', (req, res) => {
   res.render('pages/cache');
