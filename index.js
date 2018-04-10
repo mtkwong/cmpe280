@@ -301,9 +301,9 @@ app.get('/pizza', (req, res) => {
  *************************************/
 var redis = require('redis');
 bluebird.promisifyAll(redis);
-bluebird.promisifyAll(redis.RedisClient.prototype);
-redisClient = redis.createClient(process.env.REDIS_URL);
-console.log("HELLLLLLLLOOOOOOO WORLD");
+//bluebird.promisifyAll(redis.RedisClient.prototype);
+var redisClient = redis.createClient(process.env.REDIS_URL);
+//console.log("HELLLLLLLLOOOOOOO WORLD");
 app.get('/cache', (req, res) => {
   res.render('pages/cache');
   for(var i=1;i<4;i++) {
