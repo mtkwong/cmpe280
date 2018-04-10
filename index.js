@@ -317,8 +317,9 @@ app.get('/getImage', (req, res) => {
   redisClient.exists(id, async function(err, reply) {
     if (reply === 1) {
       result["txt"] = "Image loaded from: Redis Cache";
-      redisClient.get(id, function(err, reply) {
-        result["img"] = reply;
+      redisClient.get(id, function(err, reply2) {
+        console.log(reply2);
+        result["img"] = reply2;
       });
       console.log(result);
       res.send(JSON.stringify(result));
