@@ -14,7 +14,6 @@ const WebSocket = require('ws');
 const url = require('url');
 const fs = require('fs');
 
-
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,9 +27,9 @@ const wss = new WebSocket.Server({ server });
 /*************************************
  * Health Camp SPA                   *
  *************************************/
+dbClient.connect();
 app.get('/healthCamp', (req, res) => {
   res.render('pages/health_camp_spa');
-  dbClient.connect();
 });
 
 app.post('/savePersonalInfo', function(req, res) {
@@ -289,12 +288,52 @@ wss.on('connection', function(connection) {
 });
 
 /*************************************
- * Build Your Own Pizza.             *
+ * Build Your Own Pizza              *
  *************************************/
 
 app.get('/pizza', (req, res) => {
   res.render('pages/pizza');
 });
+
+/*************************************
+ * Redis Image Cache                 *
+ *************************************/
+const redisClient = require('redis').createClient(process.env.REDIS_URL);
+app.get('/cache', (req, res) => {
+  res.render('pages/cache');
+  for(var i=1;i<4;i++) {
+    redisClient.exists(i.toString(), function(err, reply) {
+      if (reply === 1) {
+        redisClient.del(i.toString(), function(err, reply) {});
+      }
+    });
+  }
+});
+
+app.get('/getImage', (req, res) => {
+  result = {};
+  var id = parseInt(req.query.id).toString();
+  redisClient.exists(id, function(err, reply) {
+    if (reply === 1) {
+      result["txt"] = "Image loaded from: Redis Cache";
+      redisClient.get(id, function(err, reply) {
+        result["img"] = reply;
+      });
+    } else {
+      result["txt"] = "Image loaded from: PostgreSQL Database";
+      const { rows } = await dbClient.query("SELECT * FROM cachetest WHERE ID=" + id);
+      var img = rows[0].photo;
+      redisClient.set([id, img]);
+      result["img"] = img;
+    }
+  });
+  res.send(JSON.stringify(result));
+};
+
+/*
+redisClient.on('connect', function() {
+  console.log('connected to redis cache');
+});*/
 
 /*************************************
  * Other functionality               *
