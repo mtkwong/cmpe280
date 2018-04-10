@@ -9,6 +9,11 @@
   float: left;
 }
 
+#theImage {
+  width: 500px;
+  height: 500px;
+}
+
 button {
   margin-top: 10px;
   margin-bottom: 10px;

@@ -315,7 +315,7 @@ app.get('/cache', (req, res) => {
 });
 
 app.get('/getImage', (req, res) => {
-  result = {};
+  var result = {};
   var id = parseInt(req.query.id).toString();
   //console.log(id);
   redisClient.exists(id, async function(err, reply) {
@@ -333,6 +333,9 @@ app.get('/getImage', (req, res) => {
       var img = rows[0].photo;
       //console.log(img);
       redisClient.set(id, img);
+      redisClient.get(id, function(err, reply3) {
+        console.log(reply3);
+      });
       result["img"] = img;
       //console.log(result);
       res.send(JSON.stringify(result));
