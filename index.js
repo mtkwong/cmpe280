@@ -322,7 +322,7 @@ app.get('/getImage', (req, res) => {
     if (reply === 1) {
       result["txt"] = "Image loaded from: Redis Cache";
       redisClient.get(id, function(err, reply2) {
-        //console.log(reply2);
+        console.log(reply2);
         result["img"] = reply2;
       });
       //console.log(result);
@@ -333,9 +333,6 @@ app.get('/getImage', (req, res) => {
       var img = rows[0].photo;
       //console.log(img);
       redisClient.set(id, img);
-      redisClient.get(id, function(err, reply3) {
-        console.log(reply3);
-      });
       result["img"] = img;
       //console.log(result);
       res.send(JSON.stringify(result));
