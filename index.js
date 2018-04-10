@@ -3,7 +3,6 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const seneca = require('seneca')();
 const axios = require('axios');
-const bluebird = require('bluebird');
 const PORT = process.env.PORT || 5555;
 const app = express();
 const { Client } = require('pg');
@@ -299,38 +298,37 @@ app.get('/pizza', (req, res) => {
 /*************************************
  * Redis Image Cache                 *
  *************************************/
-var redis = require('redis');
-bluebird.promisifyAll(redis);
-//bluebird.promisifyAll(redis.RedisClient.prototype);
-var redisClient = redis.createClient(process.env.REDIS_URL);
-//console.log("HELLLLLLLLOOOOOOO WORLD");
+const redisClient = require('redis').createClient(process.env.REDIS_URL);
 app.get('/cache', (req, res) => {
   res.render('pages/cache');
   for(var i=1;i<4;i++) {
-    var reply = await redisClient.existsAsync(i.toString());
-    if (reply === 1) {
-      await redisClient.delAsync(i.toString());
-    }
+    redisClient.exists(i.toString(), function(err, reply) {
+      if (reply === 1) {
+        redisClient.del(i.toString(), function(err, reply) {});
+      }
+    });
   }
 });
 
 app.get('/getImage', (req, res) => {
   result = {};
   var id = parseInt(req.query.id).toString();
-  var reply = await redisClient.existsAsync(id);
-  if (reply === 1) {
-    result["txt"] = "Image loaded from: Redis Cache";
-    var reply2 = await redisClient.getAsync(id);
-    result["img"] = reply2;
-  } else {
-    result["txt"] = "Image loaded from: PostgreSQL Database";
-    const { rows } = await dbClient.query("SELECT * FROM cachetest WHERE ID=" + id);
-    var img = rows[0].photo;
-    await redisClient.setAsync([id, img]);
-    result["img"] = img;
-  }
+  redisClient.exists(id, async function(err, reply) {
+    if (reply === 1) {
+      result["txt"] = "Image loaded from: Redis Cache";
+      redisClient.get(id, function(err, reply) {
+        result["img"] = reply;
+      });
+    } else {
+      result["txt"] = "Image loaded from: PostgreSQL Database";
+      const { rows } = await dbClient.query("SELECT * FROM cachetest WHERE ID=" + id);
+      var img = rows[0].photo;
+      redisClient.set([id, img]);
+      result["img"] = img;
+    }
+  });
   res.send(JSON.stringify(result));
-};
+});
 
 /*
 redisClient.on('connect', function() {
